@@ -1,4 +1,8 @@
 import org.mongodb.scala._
+import org.mongodb.scala.model.Filters._
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.util.{Failure, Success}
 
 object Main extends App {
 
@@ -47,12 +51,30 @@ object Main extends App {
     testCollection.find().head()
   }
 
+  def deleteById(id: Int) = {
+    testCollection.deleteOne(equal("_id", 1)).headOption().onComplete{
+      case Success(value) => println("Completed")
+      case Failure(error) => error.printStackTrace()
+    }
+  }
+
+
+  def findById(id: Int) = {
+    testCollection.find(equal("_id", id)).headOption().onComplete{
+      case Success(value) => println(s"The value we've been waiting for is: ${value.getOrElse("")}")
+      case Failure(error) => error.printStackTrace()
+    }
+  }
 
   //addDocument(doc)
   //addDocuments(documents)
   //addDocuments(IndexedSeq[Document](doc, doc1, doc2))
 
   //getFirstDocument().map(println(_))
+  //getAllDocuments().foreach(println(_))
+
+  //findById(1)
+  //deleteById(1)
 
   // to keep JVM running, not required in a play application
   Thread.sleep(3000)
