@@ -1,5 +1,6 @@
 import org.mongodb.scala._
 import org.mongodb.scala.model.Filters._
+import org.mongodb.scala.model.Updates._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
@@ -66,6 +67,13 @@ object Main extends App {
     }
   }
 
+  def updateName(id: Int, newName: String) = {
+    testCollection.updateOne(equal("_id", id), set("name", newName)).headOption().onComplete{
+      case Success(value) => println(s"The value has been updated")
+      case Failure(error) => error.printStackTrace()
+    }
+  }
+
   //addDocument(doc)
   //addDocuments(documents)
   //addDocuments(IndexedSeq[Document](doc, doc1, doc2))
@@ -75,6 +83,8 @@ object Main extends App {
 
   //findById(1)
   //deleteById(1)
+
+  updateName(2, "Whatever")
 
   // to keep JVM running, not required in a play application
   Thread.sleep(3000)
