@@ -79,4 +79,7 @@ object Main extends App {
   // to keep JVM running, not required in a play application
   Thread.sleep(3000)
 
+  // close connection
+  mongoClient.close()
+
 }
