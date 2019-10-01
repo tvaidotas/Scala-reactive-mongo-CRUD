@@ -15,14 +15,35 @@ object Main extends App {
   val testCollection = database.getCollection("test")
 
   // Example document _id has to be unique
-  val doc: Document = Document("_id" -> 1, "name" -> "MongoDB", "type" -> "database",
-    "count" -> 1, "info" -> Document("x" -> 203, "y" -> 102))
+  val doc: Document = Document(
+    "_id" -> 1,
+    "name" -> "MongoDB",
+    "type" -> "database",
+    "count" -> 1,
+    "info" -> Document(
+      "x" -> 203,
+      "y" -> 102)
+  )
   // Example document _id has to be unique
-  val doc1: Document = Document("_id" -> 2, "name" -> "MongoDB", "type" -> "database",
-    "count" -> 1, "info" -> Document("x" -> 203, "y" -> 102))
+  val doc1: Document = Document(
+    "_id" -> 2,
+    "name" -> "MongoDB",
+    "type" -> "database",
+    "count" -> 1,
+    "info" -> Document(
+      "x" -> 203,
+      "y" -> 102)
+  )
   // Example document _id has to be unique
-  val doc2: Document = Document("_id" -> 3, "name" -> "MongoDB", "type" -> "database",
-    "count" -> 1, "info" -> Document("x" -> 203, "y" -> 102))
+  val doc2: Document = Document(
+    "_id" -> 3,
+    "name" -> "MongoDB",
+    "type" -> "database",
+    "count" -> 1,
+    "info" -> Document(
+      "x" -> 203,
+      "y" -> 102)
+  )
   // Example documents collection _id would be uniques as mongodb would create it itself
   val documents = (1 to 10) map { i: Int => Document("i" -> i) }
 
