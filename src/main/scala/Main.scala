@@ -27,7 +27,7 @@ object Main extends App {
   val documents = (1 to 10) map { i: Int => Document("i" -> i) }
 
   def addDocument(doc: Document) = {
-    val observable = testCollection.insertOne(doc)
+    testCollection.insertOne(doc)
       .subscribe(new Observer[Completed] {
         override def onNext(result: Completed): Unit = println("Inserted")
         override def onError(e: Throwable): Unit = println(s"Failed ${e.getStackTrace.toString}")
@@ -36,7 +36,7 @@ object Main extends App {
   }
 
   def addDocuments(doc: IndexedSeq[Document]) = {
-    val observable = testCollection.insertMany(doc)
+    testCollection.insertMany(doc)
       .subscribe(new Observer[Completed] {
         override def onNext(result: Completed): Unit = println("Inserted")
         override def onError(e: Throwable): Unit = println(s"Failed ${e.getStackTrace.toString}")
