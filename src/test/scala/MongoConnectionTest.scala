@@ -1,4 +1,4 @@
-import org.mongodb.scala.MongoClient
+import org.mongodb.scala.{Document, MongoClient, MongoCollection, MongoDatabase}
 import org.scalatest.{BeforeAndAfter, FunSuite, Inside, Inspectors, Matchers, OptionValues}
 import org.mockito.Mockito._
 import org.scalatest._
@@ -13,6 +13,26 @@ with OptionValues with Inside with Inspectors with MockitoSugar with BeforeAndAf
     when(mongoConnection.getClient("")).thenReturn(MongoClient("mongodb://blah"))
     val realMongoConnection = new MongoConnection
     assert(realMongoConnection.getClient("mongodb://blah").isInstanceOf[MongoClient])
+  }
+
+  test("Should get a Database") {
+    val mongoConnection = mock[MongoConnection]
+    val mongoClient = mock[MongoClient]
+    val mongoDatabase = mock[MongoDatabase]
+    when(mongoConnection.getDatabase(mongoClient,"")).thenReturn(mongoDatabase)
+    val realMongoConnection = new MongoConnection
+    realMongoConnection.getDatabase(mongoClient,"")
+//    assert(realMongoConnection.getDatabase(mongoClient,"").getClass.toString.isEmpty)
+  }
+
+  test("should get a Collection") {
+    val mongoConnection = mock[MongoConnection]
+    val mongoClient = mock[MongoClient]
+    val mongoDatabase = mock[MongoDatabase]
+    val mongoCollection = mock[MongoCollection[Document]]
+    when(mongoConnection.getCollection(mongoDatabase,"")).thenReturn(mongoCollection)
+    val realMongoConnection = new MongoConnection
+    realMongoConnection.getCollection(mongoDatabase,"")
   }
 
 }
