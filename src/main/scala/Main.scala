@@ -14,104 +14,53 @@ object Main extends App {
   // Get collection
   val testCollection = database.getCollection("test")
 
-  // Example document _id has to be unique
-  val doc: Document = Document(
-    "_id" -> 1,
-    "name" -> "MongoDB",
-    "type" -> "database",
-    "count" -> 1,
-    "info" -> Document(
-      "x" -> 203,
-      "y" -> 102)
-  )
-  // Example document _id has to be unique
-  val doc1: Document = Document(
-    "_id" -> 2,
-    "name" -> "MongoDB",
-    "type" -> "database",
-    "count" -> 1,
-    "info" -> Document(
-      "x" -> 203,
-      "y" -> 102)
-  )
-  // Example document _id has to be unique
-  val doc2: Document = Document(
-    "_id" -> 3,
-    "name" -> "MongoDB",
-    "type" -> "database",
-    "count" -> 1,
-    "info" -> Document(
-      "x" -> 203,
-      "y" -> 102)
-  )
-  // Example documents collection _id would be uniques as mongodb would create it itself
-  val documents = (1 to 10) map { i: Int => Document("i" -> i) }
-
-  def addDocument(doc: Document) = {
+  def addDocument(doc: Document): Unit = {
     testCollection.insertOne(doc)
-      .subscribe(new Observer[Completed] {
-        override def onNext(result: Completed): Unit = println("Inserted")
-        override def onError(e: Throwable): Unit = println(s"Failed ${e.getStackTrace.toString}")
-        override def onComplete(): Unit = println("Completed")
-    })
+      .subscribe(MongoHelper.observeInsert)
   }
 
-  def addDocuments(doc: IndexedSeq[Document]) = {
+  def addDocuments(doc: IndexedSeq[Document]): Unit = {
     testCollection.insertMany(doc)
-      .subscribe(new Observer[Completed] {
-        override def onNext(result: Completed): Unit = println("Inserted")
-        override def onError(e: Throwable): Unit = println(s"Failed ${e.getStackTrace.toString}")
-        override def onComplete(): Unit = println("Completed")
-      })
+      .subscribe(MongoHelper.observeInsert)
   }
 
-  def getAllDocuments() = {
+  def getAllDocuments = {
     testCollection.find()
   }
 
-  def getFirstDocument() = {
+  def getFirstDocument = {
     testCollection.find().head()
   }
 
-  def deleteById(id: Int) = {
-    testCollection.deleteOne(equal("_id", 1)).headOption().onComplete{
+  def deleteById(id: Int): Unit = {
+    testCollection.deleteOne(equal("_id", 1)).headOption().onComplete {
       case Success(value) => println("Completed")
       case Failure(error) => error.printStackTrace()
     }
   }
 
 
-  def findById(id: Int) = {
-    testCollection.find(equal("_id", id)).headOption().onComplete{
-      case Success(value) => println(s"The value we've been waiting for is: ${value.getOrElse("")}")
+  def findById(id: Int): Unit = {
+    testCollection.find(equal("_id", id)).headOption().onComplete {
+      case Success(value) => println(s"The value we've been waiting for is: ${value.getOrElse("Item not found")}")
       case Failure(error) => error.printStackTrace()
     }
   }
 
-  // A different way of dealing with results
-//  def findById(id: Int) = {
-//    testCollection.find(equal("_id", id)).headOption()
-//  }
-//  findById(3).map(value => println(value.getOrElse("Item not found")))
+  def findByIdReturningFuture(id: Int) = {
+    testCollection.find(equal("_id", id)).headOption()
+  }
 
-  def updateName(id: Int, newName: String) = {
-    testCollection.updateOne(equal("_id", id), set("name", newName)).headOption().onComplete{
-      case Success(value) => println(s"The value has been updated")
+  def updateName(id: Int, newName: String): Unit = {
+    testCollection.updateOne(equal("_id", id), set("name", newName)).headOption().onComplete {
+      case Success(value) => println(s"The value has been updated to: $value")
       case Failure(error) => error.printStackTrace()
     }
   }
 
-  //addDocument(doc2)
-  //addDocuments(documents)
-  //addDocuments(IndexedSeq[Document](doc, doc1, doc2))
+ // findByIdReturningFuture(3).map(value => println(value.getOrElse("Item not found")))
 
-  //getFirstDocument().map(println(_))
-  //getAllDocuments().foreach(println(_))
-
-  //findById(3)
-  //deleteById(3)
-
-  //updateName(2, "Whatever")
+  addDocument(MongoHelper.doc)
 
   // to keep JVM running, not required in a play application
   Thread.sleep(3000)
