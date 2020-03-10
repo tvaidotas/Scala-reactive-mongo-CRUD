@@ -88,6 +88,7 @@ object Main extends App {
     }
   }
 
+  // A different way of dealing with results
 //  def findById(id: Int) = {
 //    testCollection.find(equal("_id", id)).headOption()
 //  }
@@ -107,7 +108,7 @@ object Main extends App {
   //getFirstDocument().map(println(_))
   //getAllDocuments().foreach(println(_))
 
-  findById(3)
+  //findById(3)
   //deleteById(3)
 
   //updateName(2, "Whatever")
