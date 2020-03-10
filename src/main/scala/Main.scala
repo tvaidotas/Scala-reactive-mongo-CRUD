@@ -1,5 +1,6 @@
 import helpers.MongoHelper
 import org.mongodb.scala._
+import org.mongodb.scala.bson.ObjectId
 import org.mongodb.scala.model.Filters._
 import org.mongodb.scala.model.Updates._
 
@@ -23,41 +24,40 @@ object Main extends App {
   }
 
   def getAllDocuments = {
-    testCollection.find()
+    testCollection.find.toFuture
   }
 
   def getFirstDocument = {
-    testCollection.find().head()
+    testCollection.find.headOption
   }
 
-  def deleteById(id: Int): Unit = {
-    testCollection.deleteOne(equal("_id", 1)).headOption().onComplete {
+  def deleteById(id: ObjectId): Unit = {
+    testCollection.deleteOne(equal("_id", id)).toFuture.onComplete {
       case Success(_) => println("Completed")
-      case Failure(error) => error.printStackTrace()
+      case Failure(error) => println(error)
     }
   }
 
 
-  def findById(id: Int): Unit = {
-    testCollection.find(equal("_id", id)).headOption().onComplete {
+  def findById(id: ObjectId): Unit = {
+    findByIdReturningFuture(id).onComplete {
       case Success(value) => println(s"The value we've been waiting for is: ${value.getOrElse("Item not found")}")
-      case Failure(error) => error.printStackTrace()
+      case Failure(error) => println(error)
     }
   }
 
-  def findByIdReturningFuture(id: Int) = {
-    testCollection.find(equal("_id", id)).headOption()
+  def findByIdReturningFuture(id: ObjectId) = {
+    testCollection.find(equal("_id", id)).headOption
   }
 
-  def updateName(id: Int, newName: String): Unit = {
-    testCollection.updateOne(equal("_id", id), set("name", newName)).headOption().onComplete {
+  def updateName(id: ObjectId, newName: String): Unit = {
+    testCollection.updateOne(equal("_id", id), set("name", newName)).headOption.onComplete {
       case Success(value) => println(s"The value has been updated to: $value")
-      case Failure(error) => error.printStackTrace()
+      case Failure(error) => println(error)
     }
   }
 
   //findByIdReturningFuture(1).map(value => println(value.getOrElse("Item not found")))
-
   //addDocument(MongoHelper.doc)
 
   Thread.sleep(3000)
