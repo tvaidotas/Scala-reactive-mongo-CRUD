@@ -1,3 +1,5 @@
+package helpers
+
 import org.mongodb.scala.{Completed, Document, Observer}
 
 object MongoHelper {
