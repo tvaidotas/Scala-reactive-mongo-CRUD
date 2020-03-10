@@ -28,7 +28,7 @@ object PersonMain extends App {
   }
 
   def getAllDocuments = {
-    collection.find().toFuture
+    collection.find.toFuture
   }
 
   def getFirstDocument = {
