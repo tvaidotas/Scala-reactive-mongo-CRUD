@@ -17,7 +17,7 @@ class MongoConnectionServiceTest extends BaseTest {
   "Trying to get mongo client" should "produce client" in {
       when(mockMongoConnection.getClient(TestConstants.dbUrl)).thenReturn(MongoClient(TestConstants.dbUrl))
       assert(mongoConnection.getClient(TestConstants.dbUrl).isInstanceOf[MongoClient])
-    }
+  }
 
   "Trying to get a mongo database" should "produce database" in {
     val mongoClient = mock[MongoClient]
