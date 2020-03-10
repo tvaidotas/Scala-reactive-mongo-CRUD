@@ -32,7 +32,7 @@ object Main extends App {
 
   def deleteById(id: Int): Unit = {
     testCollection.deleteOne(equal("_id", 1)).headOption().onComplete {
-      case Success(value) => println("Completed")
+      case Success(_) => println("Completed")
       case Failure(error) => error.printStackTrace()
     }
   }
