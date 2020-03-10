@@ -9,7 +9,7 @@ import scala.util.{Failure, Success}
 object Main extends App {
 
   // Get connection
-  val mongoClient: MongoClient = MongoClient("mongodb://localhost")
+  val mongoClient: MongoClient = MongoClient()
   // Get database
   val database: MongoDatabase = mongoClient.getDatabase("test")
   // Get collection
@@ -59,9 +59,9 @@ object Main extends App {
     }
   }
 
- // findByIdReturningFuture(3).map(value => println(value.getOrElse("Item not found")))
+  //findByIdReturningFuture(1).map(value => println(value.getOrElse("Item not found")))
 
-  addDocument(MongoHelper.doc)
+  //addDocument(MongoHelper.doc)
 
   // to keep JVM running, not required in a play application
   Thread.sleep(3000)
