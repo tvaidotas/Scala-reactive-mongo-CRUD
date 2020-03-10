@@ -2,7 +2,7 @@ package service
 
 import helpers.{BaseTest, TestConstants}
 import org.mockito.Mockito._
-import org.mongodb.scala.{Document, MongoClient, MongoCollection, MongoDatabase}
+import org.mongodb.scala._
 
 class MongoConnectionServiceTest extends BaseTest {
 

@@ -17,8 +17,9 @@ object PersonMain extends App {
       .subscribe(MongoHelper.observeInsert)
   }
 
-  addDocument(Person("name", "surname"))
+  //addDocument(Person("name", "surname"))
 
+  Thread.sleep(3000)
   mongoClient.close()
 
 }

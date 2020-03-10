@@ -8,11 +8,8 @@ import scala.util.{Failure, Success}
 
 object Main extends App {
 
-  // Get connection
   val mongoClient: MongoClient = MongoClient()
-  // Get database
   val database: MongoDatabase = mongoClient.getDatabase("test")
-  // Get collection
   val testCollection = database.getCollection("test")
 
   def addDocument(doc: Document): Unit = {
@@ -63,10 +60,7 @@ object Main extends App {
 
   //addDocument(MongoHelper.doc)
 
-  // to keep JVM running, not required in a play application
   Thread.sleep(3000)
-
-  // close connection
   mongoClient.close()
 
 }
