@@ -1,4 +1,3 @@
-import Main.testCollection
 import helpers.MongoHelper
 import models.Person
 import org.mongodb.scala.{MongoClient, MongoCollection, MongoDatabase}
@@ -10,7 +9,6 @@ import org.mongodb.scala.model.Updates.set
 
 import scala.util.{Failure, Success}
 import scala.concurrent.ExecutionContext.Implicits.global
-
 
 object PersonMain extends App {
 
@@ -30,15 +28,15 @@ object PersonMain extends App {
   }
 
   def getAllDocuments = {
-    collection.find()
+    collection.find().toFuture
   }
 
   def getFirstDocument = {
-    collection.find().head()
+    collection.find.first.headOption
   }
 
   def deleteById(id: Int): Unit = {
-    collection.deleteOne(equal("_id", 1)).headOption().onComplete {
+    collection.deleteOne(equal("_id", id)).toFuture.onComplete {
       case Success(_) => println("Completed")
       case Failure(error) => error.printStackTrace()
     }
@@ -48,24 +46,27 @@ object PersonMain extends App {
   def findById(id: Int): Unit = {
     findByIdReturningFuture(id).onComplete {
       case Success(value) => println(s"The value we've been waiting for is: ${value.getOrElse("Item not found")}")
-      case Failure(error) => error.printStackTrace()
+      case Failure(error) => println(error)
     }
   }
 
   def findByIdReturningFuture(id: Int) = {
-    collection.find(equal("_id", id)).headOption()
+    collection.find(equal("_id", id)).headOption
   }
 
   def updateName(id: Int, newName: String): Unit = {
     collection.updateOne(equal("_id", id), set("name", newName)).headOption().onComplete {
       case Success(value) => println(s"The value has been updated to: $value")
-      case Failure(error) => error.printStackTrace()
+      case Failure(error) => println(error)
     }
   }
 
-  //addDocument(Person("name", "surname"))
+  addDocument(Person("name", "surname"))
+  getFirstDocument.map(value => println(value.getOrElse("Value not found")))
+  getAllDocuments.map(println(_))
 
-  Thread.sleep(3000)
+
+  Thread.sleep(5000)
   mongoClient.close()
 
 }
