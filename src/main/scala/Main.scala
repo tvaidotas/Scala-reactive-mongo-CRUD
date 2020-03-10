@@ -88,6 +88,11 @@ object Main extends App {
     }
   }
 
+//  def findById(id: Int) = {
+//    testCollection.find(equal("_id", id)).headOption()
+//  }
+//  findById(3).map(value => println(value.getOrElse("Item not found")))
+
   def updateName(id: Int, newName: String) = {
     testCollection.updateOne(equal("_id", id), set("name", newName)).headOption().onComplete{
       case Success(value) => println(s"The value has been updated")
@@ -95,15 +100,15 @@ object Main extends App {
     }
   }
 
-  //addDocument(doc)
+  //addDocument(doc2)
   //addDocuments(documents)
   //addDocuments(IndexedSeq[Document](doc, doc1, doc2))
 
   //getFirstDocument().map(println(_))
   //getAllDocuments().foreach(println(_))
 
-  //findById(1)
-  //deleteById(1)
+  findById(3)
+  //deleteById(3)
 
   //updateName(2, "Whatever")
 
