@@ -51,7 +51,7 @@ object Main extends App {
   }
 
   def updateName(id: ObjectId, newName: String): Unit = {
-    testCollection.updateOne(equal("_id", id), set("name", newName)).headOption.onComplete {
+    testCollection.updateOne(equal("_id", id), set("name", newName)).toFuture.onComplete {
       case Success(value) => println(s"The value has been updated to: $value")
       case Failure(error) => println(error)
     }
